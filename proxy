@@ -8,7 +8,7 @@ curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN
 
 function host_up
 {
-  ansible-playbook digitalocean-up.yml 
+  ansible-playbook digitalocean-up.yml --extra-vars="do_token=`echo $TOKEN`"
 
   IP=`cat droplet_ip`
   cat hosts_template |sed "s/IP/$IP/g" > hosts
@@ -30,7 +30,7 @@ case $1 in
   ;;
 
  down)
-  ansible-playbook digitalocean-down.yml 
+  ansible-playbook digitalocean-down.yml  --extra-vars="do_token=`echo $TOKEN`"
   ;;
 
  show)
