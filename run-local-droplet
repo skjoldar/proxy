@@ -1,0 +1,9 @@
+#!/bin/bash
+DROPLET_IP=`ifconfig eth0 |grep inet\ |cut -f2 -d: |cut -f1 -d" "`
+apt-get install squid3 -y
+apt-get install apache2 -y
+
+
+sed -i "s|\#acl\ localnet\ src\ 10\.0\.0\.0\/8|acl\ localnet\ src\ $DROPLET_IP\/32|g" /etc/squid/squid.conf
+sed -i 's|\#http_access\ allow\ localnet|http_access\ allow\ localnet|g' /etc/squid/squid.conf
+service squid reload
