@@ -10,11 +10,11 @@ function host_up
 {
   ansible-playbook digitalocean-up.yml --extra-vars="do_token=`echo $TOKEN`"
 
-  IP=`cat droplet_ip`
+  IP=`cat ~/droplet_ip`
   cat hosts_template |sed "s/IP/$IP/g" > hosts
 
   echo "Wait for node's ssh"
-  until ssh -o "StrictHostKeyChecking=no" -i DO2 -T root@$IP exit 2>/dev/null
+  until ssh -o "StrictHostKeyChecking=no" -i ~/DO2 -T root@$IP exit # 2>/dev/null
    do
      echo -n '.'
      sleep 5
