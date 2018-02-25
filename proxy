@@ -1,0 +1,45 @@
+#!/bin/bash
+if [ -z ${TOKEN+x} ]; then echo "Set token first"; exit 1;
+fi
+function proxy_show 
+{
+curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" "https://api.digitalocean.com/v2/droplets" |jq
+}
+
+function host_up
+{
+  ansible-playbook digitalocean-up.yml 
+
+  IP=`cat droplet_ip`
+  cat hosts_template |sed "s/IP/$IP/g" > hosts
+
+  echo "Wait for node's ssh"
+  until ssh -o "StrictHostKeyChecking=no" -i DO2 -T root@$IP exit 2>/dev/null
+   do
+     echo -n '.'
+     sleep 5
+   done
+  echo ''
+  ansible-playbook -i hosts squid.yml 
+}
+
+case $1 in
+
+ up)
+  host_up
+  ;;
+
+ down)
+  ansible-playbook digitalocean-down.yml 
+  ;;
+
+ show)
+  proxy_show
+  ;;
+
+ *)
+  echo " Usage: proxy up|down|show"
+  ;;
+esac
+
+
