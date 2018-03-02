@@ -10,7 +10,7 @@
      notify:
       - Start Squid
    - name: Change squid ACLS
-     script: /usr/local/bin/run-local-droplet 
+     script: run-local-droplet 
 
   handlers:
    - name: Start Squid
