@@ -1,2 +1,2 @@
 [drop]
-159.65.236.134 ansible_ssh_private_key_file=~/DO2 ansible_ssh_user=root
+67.207.80.216 ansible_ssh_private_key_file=~/DO2 ansible_ssh_user=root
